@@ -140,3 +140,6 @@ list.pop();
 console.log(list.toString());
 console.log(list.contains("snake"));
 console.log(list.find("snake"));
+console.log(typeof list);
+
+export { LinkedList, Node };
