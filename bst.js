@@ -28,7 +28,6 @@ class Tree {
       } else if (value < current.data && current.left) {
         current = current.left;
       } else break;
-      //   console.log("loading");
     }
     let node = new Node(value);
     if (current.data < value) {
@@ -38,7 +37,46 @@ class Tree {
   }
 
   delete(value) {}
+  find() {}
+
+  levelOrderTraversal(callback, queue = [this.root]) {
+    if (typeof callback !== "function") {
+      throw new Error("Parameter should not be empty!");
+    }
+
+    const node = queue.shift();
+    if (!node) {
+      return;
+    }
+    callback(node);
+
+    if (node.left) queue.push(node.left);
+    if (node.right) queue.push(node.right);
+
+    this.levelOrderTraversal(callback, queue);
+
+    //  while (queue>0) {
+    //   const node = queue.shift();
+
+    //   callback(node);
+
+    //   if (node.left) {
+    //     queue.push(node.left);
+    //   }
+    //   if (node.right) {
+    //     queue.push(node.right);
+    //   }
+    // }
+  }
+
+  preOrderTraversal() {}
+  inOrderTraversal() {}
+  postOrderTraversal() {}
+  rebalance() {}
+  depth() {}
+  height() {}
 }
+
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
@@ -62,3 +100,4 @@ bst.insert(0.5);
 // bst.buildTree(arr);
 prettyPrint(bst.root);
 // prettyPrint(bst2.root);
+bst.levelOrderTraversal((node) => console.log(node.data));
