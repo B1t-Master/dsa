@@ -40,6 +40,7 @@ class Tree {
   find() {}
 
   levelOrderTraversal(callback, queue = [this.root]) {
+    //need more practice on recursion
     if (typeof callback !== "function") {
       throw new Error("Parameter should not be empty!");
     }

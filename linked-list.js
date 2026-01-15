@@ -119,13 +119,13 @@ class LinkedList {
 
 const list = new LinkedList();
 
-list.append("dog");
-list.append("cat");
-list.append("parrot");
-list.append("hamster");
-list.append("snake");
-list.append("turtle");
-list.prepend(1);
+// list.append("dog");
+// list.append("cat");
+// list.append("parrot");
+// list.append("hamster");
+// list.append("snake");
+// list.append("turtle");
+// list.prepend(1);
 
 // console.log(list.size());
 
@@ -136,10 +136,10 @@ list.prepend(1);
 // console.log(list.at(3));
 // console.log(list.at(8));
 
-list.pop();
-console.log(list.toString());
-console.log(list.contains("snake"));
-console.log(list.find("snake"));
-console.log(typeof list);
+// list.pop();
+// console.log(list.toString());
+// console.log(list.contains("snake"));
+// console.log(list.find("snake"));
+// console.log(typeof list);
 
 export { LinkedList, Node };
