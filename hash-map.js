@@ -4,8 +4,8 @@ class HashMap {
   constructor() {
     this.loadFactor = 0.75;
     this.capacity = 16;
-    this.storage = Array(this.capacity);
-    this.preventCollisions(this.storage);
+    this.buckets = Array(this.capacity);
+    this.preventCollisions(this.buckets);
   }
 
   preventCollisions(array) {
@@ -26,15 +26,47 @@ class HashMap {
   }
 
   set(key, value) {
+    const name = key;
+    let obj = {};
+    obj[name] = value;
     let location = this.#hash(key);
-    if (!this.storage[location]) return this.storage[location].append(value);
+    if (this.get(key)) {
+      let current = this.buckets[location].head;
+      let prev = null;
+      while (current) {
+        let bucketItem = Object.values(Object.keys(current.value));
+        //   console.log(bucketItem);
+        // console.log(c)
+        if (bucketItem.includes(key)) {
+          current.value[key] = value;
+        }
+        prev = current;
+        current = current.next;
+      }
+    }
 
-    return this.storage[location].append(value);
-    // this.#hash(key);
+    return this.buckets[location].append(obj);
+
+    // "update" value of already existing key
     //needs to grow with load factor aswell
   }
 
-  get(key) {}
+  get(key) {
+    let location = this.#hash(key);
+    console.log(location);
+    let current = this.buckets[location].head;
+    let prev = null;
+    while (current) {
+      let bucketItem = Object.values(Object.keys(current.value));
+      //   console.log(bucketItem);
+      // console.log(c)
+      if (bucketItem.includes(key)) {
+        return "Found value: " + current.value[key];
+      }
+      prev = current;
+      current = current.next;
+    }
+  }
 
   has(key) {}
 
@@ -54,6 +86,9 @@ class HashMap {
 let hashMap = new HashMap();
 hashMap.set("Rama", "banana");
 hashMap.set("Sita", "green");
+hashMap.set("Rama", "apple");
 
-console.log(hashMap.storage[3]);
+// console.log(hashMap.storage[3]);
+console.log(hashMap);
+console.log(hashMap.get("Rama"));
 // console.log(hashMap.storage.length);
