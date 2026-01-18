@@ -15,14 +15,14 @@ class HashMap {
   }
 
   #hash(key) {
-    let hash = 0;
-    for (let i = 0, len = key.length; i < len; i++) {
-      let chr = key.charCodeAt(i);
-      hash = (hash << 5) - hash + chr;
-      hash |= 0; // Convert to 32bit integer
+    let hashCode = 0;
+
+    const primeNumber = 31;
+    for (let i = 0; i < key.length; i++) {
+      hashCode = primeNumber * hashCode + key.charCodeAt(i);
     }
-    // console.log(hash);
-    return hash % this.capacity;
+
+    return hashCode % this.capacity;
   }
 
   set(key, value) {
@@ -32,43 +32,41 @@ class HashMap {
     let location = this.#hash(key);
     if (this.get(key)) {
       let current = this.buckets[location].head;
-      let prev = null;
       while (current) {
         let bucketItem = Object.values(Object.keys(current.value));
-        //   console.log(bucketItem);
-        // console.log(c)
         if (bucketItem.includes(key)) {
           current.value[key] = value;
         }
-        prev = current;
         current = current.next;
       }
     }
 
     return this.buckets[location].append(obj);
 
-    // "update" value of already existing key
+    // "update" value of already existing key- done
     //needs to grow with load factor aswell
   }
 
   get(key) {
     let location = this.#hash(key);
-    console.log(location);
+    // console.log(location);
     let current = this.buckets[location].head;
-    let prev = null;
     while (current) {
       let bucketItem = Object.values(Object.keys(current.value));
       //   console.log(bucketItem);
       // console.log(c)
       if (bucketItem.includes(key)) {
-        return "Found value: " + current.value[key];
+        return current.value[key];
       }
-      prev = current;
       current = current.next;
     }
+    return null;
   }
 
-  has(key) {}
+  has(key) {
+    if (!this.get(key)) return false;
+    return true;
+  }
 
   remove(key) {}
 
@@ -89,6 +87,10 @@ hashMap.set("Sita", "green");
 hashMap.set("Rama", "apple");
 
 // console.log(hashMap.storage[3]);
-console.log(hashMap);
-console.log(hashMap.get("Rama"));
+// console.log(hashMap);
+// console.log(hashMap.get("RaeS"));
+// console.log(hashMap.get("Rama"));
+console.log(hashMap.has("RaeS"));
+console.log(hashMap.has("Rama"));
+
 // console.log(hashMap.storage.length);
