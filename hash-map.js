@@ -95,15 +95,65 @@ class HashMap {
     return true;
   }
 
-  length() {}
+  length() {
+    let length = 0;
+    for (let i = 0; i < this.buckets.length; i++) {
+      // console.log(this.buckets[i].size());
+      length = length + this.buckets[i].size();
+    }
+    return length;
+  }
 
-  clear() {}
+  clear() {
+    this.preventCollisions(this.buckets);
+  }
 
-  keys() {}
+  keys() {
+    let keys = [];
+    for (let i = 0; i < this.buckets.length; i++) {
+      // console.log(this.buckets[i].size());
+      let current = this.buckets[i].head;
+      while (current) {
+        let bucketItem = Object.values(Object.keys(current.value));
+        //   console.log(bucketItem);
+        // console.log(c)
+        keys.push(...bucketItem);
+        current = current.next;
+      }
+    }
+    return keys;
+  }
 
-  values() {}
+  values() {
+    let values = [];
+    for (let i = 0; i < this.buckets.length; i++) {
+      let current = this.buckets[i].head;
+      while (current) {
+        let bucketItem = Object.values(current.value);
 
-  entries() {}
+        values.push(...bucketItem);
+        current = current.next;
+      }
+    }
+    return values;
+  }
+
+  entries() {
+    let entries = [];
+    for (let i = 0; i < this.buckets.length; i++) {
+      let current = this.buckets[i].head;
+      while (current) {
+        let bucketItem = [
+          ...Object.values(Object.keys(current.value)),
+          ...Object.values(current.value),
+        ];
+
+        entries.push(bucketItem);
+        current = current.next;
+      }
+    }
+    return entries;
+  }
 }
 
 let hashMap = new HashMap();
@@ -127,15 +177,22 @@ hashMap.set("dog", "brown");
 
 // console.log(hashMap.remove("RaeS"));
 
-console.log(hashMap.remove("Rama"));
-console.log(hashMap.has("Rama"));
-console.log(hashMap.has("be"));
-console.log(hashMap.buckets[3]);
+// console.log(hashMap.remove("Rama"));
+// console.log(hashMap.has("Rama"));
+// console.log(hashMap.has("be"));
+// console.log(hashMap.buckets[3]);
 
-console.log(hashMap.remove("dog"));
-console.log(hashMap.has("dog"));
+// console.log(hashMap.remove("dog"));
+// console.log(hashMap.has("dog"));
 
-console.log(hashMap.buckets);
+// console.log(hashMap.length());
+// console.log(hashMap.clear());
+// console.log(hashMap.length());
+
+console.log(hashMap.keys());
+console.log(hashMap.values());
+console.log(hashMap.entries());
+
 // console.log(hashMap.buckets[3].size());
 
 // console.log(hashMap.storage.length);
