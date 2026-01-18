@@ -52,6 +52,7 @@ class HashMap {
     let location = this.#hash(key);
     // console.log(location);
     let current = this.buckets[location].head;
+    // console.log(current);
     while (current) {
       let bucketItem = Object.values(Object.keys(current.value));
       //   console.log(bucketItem);
@@ -72,24 +73,25 @@ class HashMap {
   remove(key) {
     if (!this.has(key)) return false;
     let location = this.#hash(key);
+    // console.log(this.buckets[location].head);
     let head = this.buckets[location].head;
     let current = head;
     let prev = null;
     while (current) {
       let bucketItem = Object.values(Object.keys(current.value));
-      if (bucketItem.includes(key)) {
-        if (head === current) {
-          this.head = current.next;
-          this.buckets[location] = this.head;
-          current.next = null;
-          return true;
-        }
-        prev.next = current.next;
+      if (!bucketItem.includes(key)) continue;
+      if (head === current) {
+        this.head = current.next;
+        this.buckets[location].head = this.head;
         current.next = null;
+        return true;
       }
-      prev = current;
-      current = current.next;
+      prev.next = current.next;
+      current.next = null;
     }
+    prev = current;
+    current = current.next;
+
     return true;
   }
 
@@ -109,9 +111,9 @@ hashMap.set("Rama", "banana");
 hashMap.set("Sita", "green");
 hashMap.set("Rama", "apple");
 hashMap.set("be", "watermelon");
+hashMap.set("dog", "brown");
 
 // console.log(hashMap.buckets[3].size());
-console.log(hashMap.buckets[3]);
 
 // console.log(hashMap.storage[3]);
 // console.log(hashMap);
@@ -126,9 +128,14 @@ console.log(hashMap.buckets[3]);
 // console.log(hashMap.remove("RaeS"));
 
 console.log(hashMap.remove("Rama"));
-console.log(hashMap.has("Sita"));
 console.log(hashMap.has("Rama"));
+console.log(hashMap.has("be"));
 console.log(hashMap.buckets[3]);
+
+console.log(hashMap.remove("dog"));
+console.log(hashMap.has("dog"));
+
+console.log(hashMap.buckets);
 // console.log(hashMap.buckets[3].size());
 
 // console.log(hashMap.storage.length);
