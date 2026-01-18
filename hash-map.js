@@ -41,8 +41,20 @@ class HashMap {
         current = current.next;
       }
     }
+    this.buckets[location].append(obj);
+    //trigger growth
+    if (this.capacity * this.loadFactor < this.length()) {
+      this.capacity *= 2;
+      let entries = this.entries();
+      this.clear();
+      this.buckets = Array(this.capacity);
+      this.preventCollisions(this.buckets);
 
-    return this.buckets[location].append(obj);
+      entries.forEach((element) => {
+        // console.log(element[1]);
+        this.set(element[0], element[1]);
+      });
+    }
 
     // "update" value of already existing key- done
     //needs to grow with load factor aswell
@@ -56,7 +68,6 @@ class HashMap {
     while (current) {
       let bucketItem = Object.values(Object.keys(current.value));
       //   console.log(bucketItem);
-      // console.log(c)
       if (bucketItem.includes(key)) {
         return current.value[key];
       }
@@ -115,8 +126,6 @@ class HashMap {
       let current = this.buckets[i].head;
       while (current) {
         let bucketItem = Object.values(Object.keys(current.value));
-        //   console.log(bucketItem);
-        // console.log(c)
         keys.push(...bucketItem);
         current = current.next;
       }
@@ -156,43 +165,21 @@ class HashMap {
   }
 }
 
-let hashMap = new HashMap();
-hashMap.set("Rama", "banana");
-hashMap.set("Sita", "green");
-hashMap.set("Rama", "apple");
-hashMap.set("be", "watermelon");
-hashMap.set("dog", "brown");
+const test = new HashMap();
 
-// console.log(hashMap.buckets[3].size());
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
 
-// console.log(hashMap.storage[3]);
-// console.log(hashMap);
-// console.log(hashMap.get("RaeS"));
-// console.log(hashMap.get("Rama"));
-// console.log(hashMap.has("RaeS"));
-
-// console.log(hashMap.has("Rama"));
-
-// console.log(hashMap.has("Sita"));
-
-// console.log(hashMap.remove("RaeS"));
-
-// console.log(hashMap.remove("Rama"));
-// console.log(hashMap.has("Rama"));
-// console.log(hashMap.has("be"));
-// console.log(hashMap.buckets[3]);
-
-// console.log(hashMap.remove("dog"));
-// console.log(hashMap.has("dog"));
-
-// console.log(hashMap.length());
-// console.log(hashMap.clear());
-// console.log(hashMap.length());
-
-console.log(hashMap.keys());
-console.log(hashMap.values());
-console.log(hashMap.entries());
-
-// console.log(hashMap.buckets[3].size());
-
-// console.log(hashMap.storage.length);
+test.set("moon", "silver");
+console.log(test.length());
+// console.log(test);
