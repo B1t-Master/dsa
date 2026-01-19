@@ -36,7 +36,54 @@ class Tree {
     return (current.left = node);
   }
 
-  delete(value) {}
+  delete(value) {
+    let current = this.root;
+    let parent = null;
+    let turnRight;
+    while (current) {
+      if (value > current.data && current.right) {
+        parent = current;
+        turnRight = true;
+        current = current.right;
+      } else if (value < current.data && current.left) {
+        parent = current;
+        turnRight = false;
+        current = current.left;
+      } else break;
+    }
+
+    //no children nodes
+    if (!current.right && !current.left && turnRight)
+      return (parent.right = null);
+    if (!current.right && !current.left && !turnRight)
+      return (parent.left = null);
+
+    //1 child node
+    if (!current.right && current.left && turnRight)
+      return (parent.right = current.left);
+    if (current.right && !current.left && turnRight)
+      return (parent.right = current.right);
+    if (!current.right && current.left && !turnRight)
+      return (parent.left = current.left);
+    if (current.right && !current.left && !turnRight)
+      return (parent.left = current.right);
+
+    //2 Children node
+    let successor = this.inOrderSuccesor(current.right);
+
+    current.data = successor.data;
+    if (successor.right) {
+      return (current.right = successor.right);
+    } else return (current.right = null);
+  }
+
+  inOrderSuccesor = function (current = current.right) {
+    if (!current) return;
+    if (!current.left) return current;
+    let successor = this.inOrderSuccesor(current.left);
+    return successor;
+  };
+
   find() {}
 
   levelOrderTraversal(callback, queue = [this.root]) {
@@ -82,7 +129,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
   }
-  if (node.right !== null) {
+  if (node.right !== null || node.right !== undefined) {
     prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
   }
   console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
@@ -95,10 +142,15 @@ let arr = [1, 2, 3, 4, 5];
 let arr2 = [1, 5, 9, 14, 23, 27];
 let bst = new Tree(arr);
 let bst2 = new Tree(arr2);
-bst.insert(7);
+// bst.insert(7);
 bst.insert(0.5);
+bst.delete(1);
+// console.log(bst.inOrderSuccesor(bst.root.right));
+
+// console.log(bst.root.right);
+
+prettyPrint(bst.root);
 
 // bst.buildTree(arr);
-prettyPrint(bst.root);
 // prettyPrint(bst2.root);
-bst.levelOrderTraversal((node) => console.log(node.data));
+// bst.levelOrderTraversal((node) => console.log(node.data));
