@@ -146,9 +146,24 @@ class Tree {
     this.preOrderTraversal(callback, root.right);
     callback(root);
   }
-  rebalance() {}
+  height(value) {
+    let height = 0;
+    let current = this.root;
+    if (value === this.root.data) return 0;
+    while (current) {
+      if (value > current.data && current.right) {
+        height++;
+        current = current.right;
+      } else if (value < current.data && current.left) {
+        height++;
+        current = current.left;
+      } else break;
+      if (current.data === value) return height;
+      return null;
+    }
+  }
   depth() {}
-  height() {}
+  rebalance() {}
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -183,3 +198,6 @@ prettyPrint(bst.root);
 // bst.preOrderTraversal((node) => console.log(node.data));
 // bst.inOrderTraversal((node) => console.log(node.data));
 // bst.postOrderTraversal((node) => console.log(node.data));
+console.log(bst.height(1));
+console.log(bst.height(21));
+console.log(bst.height(3));
