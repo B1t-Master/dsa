@@ -117,9 +117,35 @@ class Tree {
     // }
   }
 
-  preOrderTraversal() {}
-  inOrderTraversal() {}
-  postOrderTraversal() {}
+  preOrderTraversal(callback, root = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("Parameter should not be empty!");
+    }
+    if (!root) return;
+    callback(root);
+    this.preOrderTraversal(callback, root.left);
+    this.preOrderTraversal(callback, root.right);
+  }
+  inOrderTraversal(callback, root = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("Parameter should not be empty!");
+    }
+    if (!root) return;
+
+    this.preOrderTraversal(callback, root.left);
+    callback(root);
+    this.preOrderTraversal(callback, root.right);
+  }
+  postOrderTraversal(callback, root = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("Parameter should not be empty!");
+    }
+    if (!root) return;
+
+    this.preOrderTraversal(callback, root.left);
+    this.preOrderTraversal(callback, root.right);
+    callback(root);
+  }
   rebalance() {}
   depth() {}
   height() {}
@@ -143,8 +169,8 @@ let arr2 = [1, 5, 9, 14, 23, 27];
 let bst = new Tree(arr);
 let bst2 = new Tree(arr2);
 // bst.insert(7);
-bst.insert(0.5);
-bst.delete(1);
+// bst.insert(0.5);
+// bst.delete(1);
 // console.log(bst.inOrderSuccesor(bst.root.right));
 
 // console.log(bst.root.right);
@@ -154,3 +180,6 @@ prettyPrint(bst.root);
 // bst.buildTree(arr);
 // prettyPrint(bst2.root);
 // bst.levelOrderTraversal((node) => console.log(node.data));
+// bst.preOrderTraversal((node) => console.log(node.data));
+// bst.inOrderTraversal((node) => console.log(node.data));
+// bst.postOrderTraversal((node) => console.log(node.data));
