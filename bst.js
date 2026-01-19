@@ -77,19 +77,27 @@ class Tree {
     } else return (current.right = null);
   }
 
-  inOrderSuccesor = function (current = current.right) {
+  inOrderSuccesor(current = current.right) {
     if (!current) return;
     if (!current.left) return current;
     let successor = this.inOrderSuccesor(current.left);
     return successor;
-  };
+  }
 
-  find() {}
+  find(value) {
+    let current = this.root;
+    while (current) {
+      if (value === current.data) return current;
+      if (value < current.data) current = current.left;
+      else current = current.right;
+    }
+    return null;
+  }
 
   levelOrderTraversal(callback, queue = [this.root]) {
     //need more practice on recursion
     if (typeof callback !== "function") {
-      throw new Error("Parameter should not be empty!");
+      throw new Error("Not a function!");
     }
 
     const node = queue.shift();
@@ -119,7 +127,7 @@ class Tree {
 
   preOrderTraversal(callback, root = this.root) {
     if (typeof callback !== "function") {
-      throw new Error("Parameter should not be empty!");
+      throw new Error("Not a function!");
     }
     if (!root) return;
     callback(root);
@@ -128,7 +136,7 @@ class Tree {
   }
   inOrderTraversal(callback, root = this.root) {
     if (typeof callback !== "function") {
-      throw new Error("Parameter should not be empty!");
+      throw new Error("Not a function!");
     }
     if (!root) return;
 
@@ -138,7 +146,7 @@ class Tree {
   }
   postOrderTraversal(callback, root = this.root) {
     if (typeof callback !== "function") {
-      throw new Error("Parameter should not be empty!");
+      throw new Error("Not a function!");
     }
     if (!root) return;
 
@@ -146,23 +154,62 @@ class Tree {
     this.preOrderTraversal(callback, root.right);
     callback(root);
   }
+
+  calcNode(current) {
+    // let node = this.root;
+    // console.log(node);
+    if (!current) return -1;
+
+    let leftSubTree = this.calcNode(current.left);
+    let rightSubTree = this.calcNode(current.right);
+    return 1 + Math.max(rightSubTree, leftSubTree);
+  }
+
   height(value) {
-    let height = 0;
+    let current = this.find(value);
+    if (!current) return null;
+    return this.calcNode(current);
+  }
+
+  //old height method cant return null on items that dont exist in tree
+
+  // traverseToNode(value, current) {
+  //   // let node = this.root;
+  //   // console.log(node);
+  //   while (current) {
+  //     if (value === current.data) return current;
+  //     if (value < current.data) current = current.left;
+  //     else current = current.right;
+  //   }
+  //   return null;
+  // }
+
+  // height(value, current = this.traverseToNode(value, this.root)) {
+  //   current = this.traverseToNode(value, current);
+  //   if (!current) return -1;
+
+  //   let leftSubTree = this.height(current.left?.data, current.left);
+  //   let rightSubTree = this.height(current.right?.data, current.right);
+  //   return 1 + Math.max(rightSubTree, leftSubTree)
+  // }
+
+  depth(value) {
+    let depth = 0;
     let current = this.root;
     if (value === this.root.data) return 0;
     while (current) {
       if (value > current.data && current.right) {
-        height++;
+        depth++;
         current = current.right;
       } else if (value < current.data && current.left) {
-        height++;
+        depth++;
         current = current.left;
       } else break;
-      if (current.data === value) return height;
+      if (current.data === value) return depth;
       return null;
     }
   }
-  depth() {}
+  isBalanced() {}
   rebalance() {}
 }
 
@@ -170,7 +217,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
   }
-  if (node.right !== null || node.right !== undefined) {
+  if (node.right !== null) {
     prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
   }
   console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
@@ -198,6 +245,9 @@ prettyPrint(bst.root);
 // bst.preOrderTraversal((node) => console.log(node.data));
 // bst.inOrderTraversal((node) => console.log(node.data));
 // bst.postOrderTraversal((node) => console.log(node.data));
-console.log(bst.height(1));
-console.log(bst.height(21));
-console.log(bst.height(3));
+console.log(bst.height(30));
+console.log(bst.find(32));
+
+// console.log(bst.traverseToNode(2));
+// console.log(bst.height(21));
+// console.log(bst.height(3));
