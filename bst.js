@@ -209,8 +209,27 @@ class Tree {
       return null;
     }
   }
-  isBalanced() {}
-  rebalance() {}
+  getBalanceFactor(current) {
+    if (!current) return -1;
+
+    let leftSubTree = this.calcNode(current.left);
+    let rightSubTree = this.calcNode(current.right);
+    if (Math.abs(leftSubTree - rightSubTree) > 1) return "Not balnced";
+    1 + Math.max(rightSubTree, leftSubTree);
+    return "Is balanced";
+  }
+  isBalanced() {
+    let current = this.root;
+    if (!current) return null;
+    return this.getBalanceFactor(current);
+  }
+  rebalance() {
+    // console.log(this.isBalanced());
+    if (this.isBalanced() === "Is Balanced") return;
+    let arr = [];
+    this.inOrderTraversal((node) => arr.push(node.data));
+    return (this.root = this.#buildTree(arr, 0, arr.length - 1));
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -226,28 +245,34 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
+function createRandomArray() {
+  let arr = [];
+  let i = 1;
+  while (arr.length < 100) {
+    arr.push(Math.floor(Math.random() * 100));
+    i++;
+    arr = [...new Set(arr)].sort((a, b) => a - b);
+  }
+  return arr;
+}
+
 let arr = [1, 2, 3, 4, 5];
 let arr2 = [1, 5, 9, 14, 23, 27];
 let bst = new Tree(arr);
 let bst2 = new Tree(arr2);
-// bst.insert(7);
-// bst.insert(0.5);
-// bst.delete(1);
-// console.log(bst.inOrderSuccesor(bst.root.right));
 
-// console.log(bst.root.right);
+// console.log(test);
+test = createRandomArray();
+test = new Tree(test);
 
-prettyPrint(bst.root);
-
-// bst.buildTree(arr);
+// bst2.insert();
 // prettyPrint(bst2.root);
-// bst.levelOrderTraversal((node) => console.log(node.data));
-// bst.preOrderTraversal((node) => console.log(node.data));
-// bst.inOrderTraversal((node) => console.log(node.data));
-// bst.postOrderTraversal((node) => console.log(node.data));
-console.log(bst.height(30));
-console.log(bst.find(32));
 
-// console.log(bst.traverseToNode(2));
-// console.log(bst.height(21));
-// console.log(bst.height(3));
+// console.log(bst2.height(9));
+test.insert(101);
+test.insert(103);
+console.log(test.rebalance());
+prettyPrint(test.root);
+
+// prettyPrint(test.root);
+// console.log(test.isBalanced());
